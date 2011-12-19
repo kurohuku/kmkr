@@ -29,28 +29,85 @@
 	 ,(mapcar (lambda (a) `(,a ,a)) args)
        ,@body)))
 
-kr:f
-kr:conjoin
-kr:disjoin
-kr:chain
+(defmacro kr:$ (expr &rest rest)
+  "ref: Gauche, Haskell, ets"
+  (reduce
+   #'(lambda (acc x)
+       (if (eq x '$)
+	   (list acc)
+	 (cons x acc)))
+   (reverse (cons expr rest))
+   :initial-value nil))
+
+;;kr:f
+;;kr:conjoin
+;;kr:disjoin
+;;kr:chain
 
 (defmacro kr:cut (expr &rest rest)
-  "SRFI 26 `cut'"
-  (when (and rest
-	     (or (>= (count '<...> rest) 2)
-		 (and (= (count '<...> rest) 1)
-		      (not (eq (car (last rest)) '<...>)))))
-    (error "invalid arguments"))
-  (let* ((syms (loop repeat (count '<> rest) collect (gensym)))
-	 (rest-slot (when (eq (car (last rest) '<...>)) (gensym)))
-	 (fnsym (gensym)))
+  "ref: SRFI-26 `cut'"
+  (when
+      (let ((c (count '<...> rest)))
+	(or (> c 1)
+	    (and (= c 1)
+		 (not
+		  (eq '<...> (car (last rest)))))))
+    (error "error: <...>"))
+  (let ((syms (loop repeat (count '<> rest) collect (gensym)))
+	(rest-slot (when (eq (car (last rest)) '<...>) (gensym)))
+	(fnsym (gensym)))
     (if (eq expr '<>)
-	`(lambda (,fnsym ,@syms ,@(and rest-slot '(&rest ,rest-slot)))
+	`(lambda (,fnsym ,@syms ,@(and rest-slot `(&rest ,rest-slot)))
 	   (apply ,fnsym
-		    ,@(loop
-			 for a in rest
-			 collect (if (eq a '<>) (pop syms) a))
-		    
-			   
+		  ,@(loop
+		     for x in rest
+		     collect (if (eq x '<>) (pop syms) x))
+		  ,rest-slot))
+      `(lambda (,@syms ,@(and rest-slot `(&rest ,rest-slot)))
+	 (apply ,expr
+		,@(loop
+		   for x in rest
+		   collect (if (eq x '<>) (pop syms) x))
+		,rest-slot)))))
+
+
+(defmacro kr:cute (expr &rest rest)
+  "ref: SRFI-26 `cute'"
+  (when
+      (let ((c (count '<...> rest)))
+	(or (> c 1)
+	    (and (= c 1)
+		 (not
+		  (eq '<...> (car (last rest)))))))
+    (error "error: <...>"))
+  (let ((syms (loop repeat (count '<> rest) collect (gensym)))
+	(evalled (loop for x in rest
+		       unless (or (eq x '<>) (eq x '<...>))
+		       collect (gensym)))
+	(rest-slot (when (eq (car (last rest)) '<...>) (gensym)))
+	(fnsym (gensym)))
+    `(lexical-let
+	 ,(loop
+	   with s = (copy-list evalled)
+	   for x in rest
+	   unless (or (eq x '<>) (eq x '<...>))
+	   collect `(,(pop s) ,x))
+       ,(if (eq expr '<>)
+	    `(lambda (,fnsym ,@syms ,@(and rest-slot `(&rest ,rest-slot)))
+	       (apply ,fnsym
+		      ,@(loop
+			 for x in rest
+			 unless (eq x '<...>)
+			 collect (if (eq x '<>) (pop syms) (pop evalled)))
+		      ,rest-slot))
+	  `(lexical-let ((,fnsym ,expr))
+	     (lambda (,@(copy-list syms) ,@(and rest-slot `(&rest ,rest-slot)))
+	       (apply ,fnsym
+		      ,@(loop
+			 for x in rest
+			 unless (eq x '<...>)
+			 collect (if (eq x '<>) (pop syms) (pop evalled)))
+		      ,rest-slot)))))))
+
 
 (provide 'kr-fn)
