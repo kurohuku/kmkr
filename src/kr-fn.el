@@ -39,10 +39,33 @@
    (reverse (cons expr rest))
    :initial-value nil))
 
-;;kr:f
-;;kr:conjoin
-;;kr:disjoin
-;;kr:chain
+(defun kr:conjoin (predicate &rest more-predicates)
+  "ref: Alexandria `conjoin'"
+  (if (null more-predicates)
+      predicate
+      (lexical-let
+	  ((predicate predicate)
+	   (more-predicates more-predicates))
+	(lambda (&rest arguments)
+	  (and (apply predicate arguments)
+	       (do ((tail (cdr more-predicates) (cdr tail))
+		    (head (car more-predicates) (car tail)))
+		   ((not tail)
+		    (apply head arguments))
+		 (unless (apply head arguments)
+		   (return nil))))))))
+
+(defun kr:disjoin (predicate &rest more-predicates)
+  "ref: Alexandria `disjoin'"
+  (lexical-let
+      ((predicate predicate)
+       (more-predicates more-predicates))
+    (lambda (&rest arguments)
+      (or (apply predicate arguments)
+	  (some
+	   (lambda (p)
+	     (apply p arguments))
+	   more-predicates)))))
 
 (defmacro kr:cut (expr &rest rest)
   "ref: SRFI-26 `cut'"
