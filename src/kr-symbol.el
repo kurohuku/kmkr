@@ -1,12 +1,22 @@
 
 (eval-when-compile (require 'cl))
 
-kr:with-gensyms
+(defmacro kr:with-gensyms (syms &rest body)
+  `(let ,(mapcar
+	  #'(lambda (s) `(,s (gensym)))
+	  syms)
+     ,@body))
 
 (defun kr:make-gensym-list (n)
   (loop repeat n collect (gensym)))
 
-kr:do-all-symbols
-kr:symb
+(defun kr:symb (expr &rest args)
+  (intern
+   (apply #'concat
+	  (format "%s" expr)
+	  (mapcar
+	   #'(lambda (s)
+	       (format "%s" s))
+	   args))))
 
 (provide 'kr-symbol)

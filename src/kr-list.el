@@ -96,8 +96,20 @@
 (defun kr:range (start end)
   (loop for i from start to end collect i))
 
-;;split
-;;group
+(defun kr:split (x lst)
+  (loop
+   for rest = lst then (subseq rest (1+ pos))
+   for pos = (position x rest)
+   collect (subseq rest 0 pos)
+   while pos))
+
+
+   
+(defun kr:group (lst n)
+  (loop
+   for rest = lst then (nthcdr n rest)
+   while rest
+   collect (subseq rest 0 n)))
 
 
 (defalias 'kr:filter #'remove-if-not)
