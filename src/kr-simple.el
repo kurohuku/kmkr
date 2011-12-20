@@ -16,6 +16,20 @@
 	(unless (= pos (point))
 	  (kill-ring-save pos (point)))))))
 
+(defun kr:downcase-word-or-active-region ()
+  (interactive)
+  (save-excursion
+    (if (and transient-mark-mode mark-active)
+	(call-interactively 'downcase-region)
+      (call-interactively 'downcase-word))))
+
+(defun kr:upcase-word-or-active-region ()
+  (interactive)
+  (save-excursion
+    (if (and transient-mark-mode mark-active)
+	(call-interactively 'upcase-region)
+      (call-interactively 'upcase-word))))
+
 (defun kr:other-window-or-split ()
   (interactive)
   (when (one-window-p)
