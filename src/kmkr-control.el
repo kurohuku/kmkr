@@ -58,4 +58,4 @@
 (put 'kr:once-only 'lisp-indent-function 1)
 
 
-(provide 'kr-control)
+(provide 'kmkr-control)

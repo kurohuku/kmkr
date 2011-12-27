@@ -1,5 +1,5 @@
-kr:parse-body
-kr:parse-ordinary-lambda-list
+;; kr:parse-body
+;; kr:parse-ordinary-lambda-list
 
 (defmacro* kr:time (&body body)
   (let ((sym (gensym)))
@@ -8,4 +8,4 @@ kr:parse-ordinary-lambda-list
        (time-to-seconds
 	(time-subtract (current-time) ,sym)))))
 
-(provide 'kr-misc)
+(provide 'kmkr-misc)

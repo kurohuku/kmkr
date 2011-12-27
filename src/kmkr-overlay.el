@@ -14,4 +14,4 @@
       (goto-char beg)))
 
 
-(provide 'kr-overlay)
+(provide 'kmkr-overlay)

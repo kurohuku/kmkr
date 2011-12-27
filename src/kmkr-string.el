@@ -11,4 +11,4 @@
    collect (prin1-to-string a) into x
    finally (return (apply #'concat x))))
 
-(provide 'kr-string)
+(provide 'kmkr-string)

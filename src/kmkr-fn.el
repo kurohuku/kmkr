@@ -133,4 +133,4 @@
 		      ,rest-slot)))))))
 
 
-(provide 'kr-fn)
+(provide 'kmkr-fn)

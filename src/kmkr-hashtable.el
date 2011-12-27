@@ -38,4 +38,4 @@
       ,@body)
     ,ht))
 
-(provide 'kr-hashtable)
+(provide 'kmkr-hashtable)

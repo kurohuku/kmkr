@@ -11,4 +11,4 @@
             `(define-key ,map ,(car def) ,(cadr def)))
           definitions))))
 
-(provide 'kr-def)
+(provide 'kmkr-def)

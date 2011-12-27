@@ -19,4 +19,4 @@
 	       (format "%s" s))
 	   args))))
 
-(provide 'kr-symbol)
+(provide 'kmkr-symbol)

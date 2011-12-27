@@ -50,4 +50,4 @@
     (call-interactively 'scroll-up))
   (call-interactively 'move-end-of-line))
 
-(provide 'kr-simple)
+(provide 'kmkr-simple)

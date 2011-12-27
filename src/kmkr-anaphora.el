@@ -19,4 +19,4 @@
 	  `(setq it ,x))
 	body)))
 
-(provide 'kr-anaphora)
+(provide 'kmkr-anaphora)

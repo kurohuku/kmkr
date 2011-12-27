@@ -19,5 +19,5 @@
 	    (push s result))))
     result))
 
-(provide 'kr-info)
+(provide 'kmkr-info)
     
