@@ -16,3 +16,5 @@
 (require 'kmkr-string)
 (require 'kmkr-symbol)
 (require 'kmkr-buffer)
+
+(provide 'kmkr)

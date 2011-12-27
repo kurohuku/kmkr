@@ -1,7 +1,7 @@
 
 (eval-when-compile (require 'cl))
 
-(defmacro kr:defkeys (map &rest keys)
+(defmacro kr:defkeys (map &rest clauses)
   (let ((definitions ;; ((key command) ...)
           (loop for rest on clauses by 'cddr
                 collect (subseq rest 0 2))))
@@ -10,5 +10,6 @@
           (lambda (def)
             `(define-key ,map ,(car def) ,(cadr def)))
           definitions))))
+(put 'kr:defkeys 'lisp-indent-function 'def)
 
 (provide 'kmkr-def)
