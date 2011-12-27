@@ -15,3 +15,4 @@
 (require 'kmkr-simple)
 (require 'kmkr-string)
 (require 'kmkr-symbol)
+(require 'kmkr-buffer)

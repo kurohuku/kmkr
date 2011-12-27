@@ -1,4 +1,3 @@
-;; kr:destructuring-case
 
 (defmacro* kr:destructuring-case (keyform &body clauses)
   "ref: Alexandria `destructuring-case'"
@@ -56,6 +55,20 @@
 	  ,(let ,(loop for v in vars for g in syms collect `(,v ,g))
 	     ,@body)))))
 (put 'kr:once-only 'lisp-indent-function 1)
+
+(defmacro* kr:equal-case (val &rest clauses)
+  (let ((gsym (gensym)))
+    (labels ((expand (clauses)
+		     (when clauses
+		       (let ((x (caar clauses)))
+		       `(if ,(if (eq x t) t
+			       `(find ,gsym ',(if (listp x) x (list x))
+				      :test #'equal))
+			    (progn ,@(cdar clauses))
+			  ,(expand (cdr clauses)))))))
+      `(let ((,gsym ,val))
+	 ,(expand clauses)))))
+(put 'kr:equal-case 'lisp-indent-function 1)
 
 
 (provide 'kmkr-control)
