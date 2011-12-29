@@ -1,5 +1,11 @@
 (add-to-list 'load-path
-	     (expand-file-name "src" (file-name-directory (buffer-file-name))))
+	     (expand-file-name
+	      "src"
+	      (file-name-directory
+	       (car (last current-load-list)))))
+
+;;(add-to-list 'load-path
+;;	     (expand-file-name "src" (file-name-directory (buffer-file-name))))
 
 (require 'kmkr-anaphora)
 (require 'kmkr-control)
