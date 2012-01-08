@@ -1,0 +1,7 @@
+* kmkr - collection of utilities for Emacs Lisp
+Emacs Lispのユーティリティ関数と簡単なコマンドを定義しています。 \
+多くの関数は以下を参考にして作成されています。
+ - Alexandria : Common Lispのユーティリティライブラリ.
+ - SRFI : Schemeの拡張(ライブラリ)仕様.
+ - On Lisp : Paul Graham 氏 の著書.
+
