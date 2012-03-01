@@ -10,6 +10,6 @@
           (lambda (def)
             `(define-key ,map ,(car def) ,(cadr def)))
           definitions))))
-(put 'kr:defkeys 'lisp-indent-function 'def)
+(put 'kr:defkeys 'lisp-indent-function 1)
 
 (provide 'kmkr-def)
